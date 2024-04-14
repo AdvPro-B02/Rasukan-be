@@ -1,13 +1,13 @@
-package advpro.b2.rasukan;
+package advpro.b2.rasukanbuysell;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class RasukanApplication {
+public class RasukanBuySellApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(RasukanApplication.class, args);
+        SpringApplication.run(RasukanBuySellApplication.class, args);
     }
 
 }

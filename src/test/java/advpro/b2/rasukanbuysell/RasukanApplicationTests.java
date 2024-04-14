@@ -1,10 +1,10 @@
-package advpro.b2.rasukan;
+package advpro.b2.rasukanbuysell;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class RasukanApplicationTests {
+class RasukanBuySellApplicationTests {
 
     @Test
     void contextLoads() {

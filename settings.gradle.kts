@@ -1,1 +1,1 @@
-rootProject.name = "Rasukan"
+rootProject.name = "RasukanBuySell"
