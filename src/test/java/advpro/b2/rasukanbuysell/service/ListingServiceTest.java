@@ -18,13 +18,14 @@ import advpro.b2.rasukanbuysell.model.Listing;
 import advpro.b2.rasukanbuysell.model.User;
 import advpro.b2.rasukanbuysell.repository.ListingRepository;
 
-class ListingServiceImplTest {
+class ListingServiceTest {
     @InjectMocks
     ListingServiceImpl listingService;
 
     @Mock
     ListingRepository listingRepository;
 
+    @SuppressWarnings("deprecation")
     @BeforeEach
     void setUp() {
         MockitoAnnotations.initMocks(this);
