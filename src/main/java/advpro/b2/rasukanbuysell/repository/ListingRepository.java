@@ -22,9 +22,24 @@ public class ListingRepository {
             UUID uuid = UUID.randomUUID();
             listing.setListingId(uuid.toString());
         }
+        
+        if (isDuplicateListing(listing)) {
+            return null;
+        }
+        
         listings.add(listing);
         return listing;
     }
+    
+    private boolean isDuplicateListing(Listing listing) {
+        for (Listing existingListing : listings) {
+            if (existingListing.getListingId().equals(listing.getListingId())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 
     public Iterator<Listing> findAll() {
         return listings.iterator();
@@ -52,14 +67,20 @@ public class ListingRepository {
     }
 
     public static void deleteListing(String listingId) {
-        listings.removeIf(listing -> listing.getListingId().equals(id));
+        listings.removeIf(listing -> listing.getListingId().equals(listingId));
     }
+
 
     public User findSeller(String userId, String listingId) {
         Listing listing = findById(listingId);
         if (listing != null) {
-            return listing.getOwner();
+            User owner = listing.getOwner();
+            if (owner.getUserId().equals(userId)) {
+                return owner;
+            }
         }
         return null;
     }
+
+
 }
