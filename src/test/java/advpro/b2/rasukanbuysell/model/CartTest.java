@@ -15,7 +15,7 @@ public class CartTest {
 
     @BeforeEach
     void setUp(){
-        this.cart = new Cart();
+        this.cart = new Cart(user);
         this.user = new User();
         this.listing = new Listing();
 

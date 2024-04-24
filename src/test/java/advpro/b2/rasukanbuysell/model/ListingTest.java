@@ -14,7 +14,7 @@ public class ListingTest {
     void setUp(){
         this.listing = new Listing();
         this.user = new User();
-        this.cart = new Cart();
+        this.cart = new Cart(user);
 
         this.listing.setListingId("eb558e9f-1c39-460e-8860-71af6af63bd6");
         this.listing.setName("Item Name");
