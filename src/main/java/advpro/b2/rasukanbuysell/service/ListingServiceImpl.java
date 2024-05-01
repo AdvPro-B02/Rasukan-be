@@ -1,14 +1,13 @@
 package advpro.b2.rasukanbuysell.service;
 
-import java.util.Iterator;
-import java.util.List;
-import java.util.ArrayList;
+import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import advpro.b2.rasukanbuysell.model.Listing;
-import advpro.b2.rasukanbuysell.model.User;
+//import advpro.b2.rasukanbuysell.model.User;
 import advpro.b2.rasukanbuysell.repository.ListingRepository;
 
 @Service
@@ -19,38 +18,50 @@ public class ListingServiceImpl implements ListingService{
 
     @Override
     public Listing createListing(Listing listing){
-        listingRepository.create(listing);
-        return listing;
+        Listing newListing = new Listing(listing.getName(), listing.getStock(), listing.getPrice());
+        try {
+            return listingRepository.save(listing);
+        } catch (DataIntegrityViolationException e) {
+            return null;
+        }
     }
 
     @Override
-    public Listing getListing(String listingId) {
-        Listing listing = listingRepository.findById(listingId);
-        return listing;
+    public Optional<Listing> getListing(String listingId) {
+        return listingRepository.findById(UUID.fromString(listingId));
     }
 
     @Override
-    public Listing updateListing(String listingId, Listing listing) {
-        ListingRepository.updateListing(listingId, listing);
-        return listing;
+    public Listing updateListing(Listing listing) {
+        if (listingRepository.existsById(UUID.fromString(listing.getListingId()))){
+            try{
+                return listingRepository.save(listing);
+            } catch (DataIntegrityViolationException e){
+                return null;
+            }
+
+        } else {
+            return null;
+        }
     }
 
     @Override
     public void deleteListing(String listingId) {
-        ListingRepository.deleteListing(listingId);
+        listingRepository.deleteById(UUID.fromString(listingId));
     }
 
     @Override
     public List<Listing> getAllListings() {
-        Iterator<Listing> listingIterator = listingRepository.findAll();
-        List<Listing> allListings = new ArrayList<>();
-        listingIterator.forEachRemaining(allListings::add);
-        return allListings;
+        return listingRepository.findAll();
+//        Iterator<Listing> listingIterator = listingRepository.findAll();
+//        List<Listing> allListings = new ArrayList<>();
+//        listingIterator.forEachRemaining(allListings::add);
+//        return allListings;
     }
 
-    @Override
-    public User getSeller(String userId, String listingId) {
-        User seller = listingRepository.findSeller(userId, listingId);
-        return seller;
-    }
+//    @Override
+//    public User getSeller(String userId, String listingId) {
+//        User seller = listingRepository.findSeller(userId, listingId);
+//        return seller;
+//    }
 }
