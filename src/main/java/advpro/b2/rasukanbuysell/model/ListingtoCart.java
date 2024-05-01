@@ -1,8 +1,5 @@
 package advpro.b2.rasukanbuysell.model;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.*;
@@ -10,18 +7,27 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name="cart")
+@Table(name="Listing_to_Cart")
 @Getter
-public class Cart {
+public class ListingtoCart {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long cartId;
+    private long listingInCartId;
 
+    @Setter
+    @ManyToOne
+    @JoinColumn(name="listing_id", referencedColumnName = "listingId")
+    private Listing listing;
 
-//    private User owner;
+    @Setter
+    @ManyToOne
+    @JoinColumn(name = "cart_id", referencedColumnName = "cartId")
+    private Cart cart;
 
-
+    @Setter
+    @Column(name = "quantity", nullable = false)
+    private int quantity;
 
     @Override
     public String toString() {
@@ -32,4 +38,6 @@ public class Cart {
             throw new RuntimeException(e);
         }
     }
+
+
 }
