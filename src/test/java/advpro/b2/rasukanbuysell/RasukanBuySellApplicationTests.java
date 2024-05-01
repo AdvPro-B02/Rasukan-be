@@ -9,7 +9,7 @@ class RasukanBuySellApplicationTests {
 
     @Test
     void contextLoads() {
-//        RasukanBuySellApplication.main(new String[] {});
+        RasukanBuySellApplication.main(new String[] {});
     }
 
 }
