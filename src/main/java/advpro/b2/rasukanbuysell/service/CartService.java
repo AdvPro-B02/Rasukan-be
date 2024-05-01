@@ -1,22 +1,23 @@
-//package advpro.b2.rasukanbuysell.service;
-//
-//import java.util.List;
-//
-//import advpro.b2.rasukanbuysell.model.Cart;
-//import advpro.b2.rasukanbuysell.model.Listing;
-//import advpro.b2.rasukanbuysell.model.User;
-//
-//public interface artService {
-//
-//    Cart createCart(User user);
-//
-//    Cart getCart(User user);
-//
-//    void addToCart(User user, Listing listing);
-//
-//    Cart updateCart(User user, List<Listing> updatedInsideCart);
-//
-//    Cart removeFromCart(User user, Listing listing);
-//
-//    void checkout(User user);
-//}
+package advpro.b2.rasukanbuysell.service;
+
+import java.util.List;
+import java.util.UUID;
+
+import advpro.b2.rasukanbuysell.model.Cart;
+import advpro.b2.rasukanbuysell.model.Listing;
+
+
+public interface CartService {
+
+    Cart createCart(UUID user);
+
+    Cart getCart(UUID user);
+
+    void addToCart(UUID user, Listing listing);
+
+    Cart updateCart(UUID user, List<Listing> updatedInsideCart);
+
+    Cart removeFromCart(UUID user, Listing listing);
+
+    void checkout(UUID user);
+}
