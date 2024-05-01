@@ -1,5 +1,7 @@
 package advpro.b2.rasukanbuysell.model;
 
+import java.util.UUID;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.*;
@@ -13,7 +15,7 @@ public class ListingtoCart {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long listingInCartId;
+    private UUID listingInCartId;
 
     @Setter
     @ManyToOne

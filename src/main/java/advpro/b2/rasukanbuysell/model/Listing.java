@@ -16,7 +16,7 @@ public class Listing {
     @Id
     @Setter
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String listingId;
+    private UUID listingId;
 
     @Setter
     @Column(name="listingName", nullable = false)

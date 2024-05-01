@@ -29,12 +29,12 @@ public class ListingBuilder {
     }
 
     public ListingBuilder addId(){
-        currentListing.setListingId(String.valueOf(UUID.randomUUID()));
+        currentListing.setListingId(UUID.randomUUID());
         return this;
     }
 
     public ListingBuilder addId(UUID id){
-        currentListing.setListingId(String.valueOf(id));
+        currentListing.setListingId(id);
         return this;
     }
 
