@@ -9,6 +9,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 //
 //    @Test
 //    void contextLoads() {
+////        RasukanBuySellApplication.main(new String[] {});
 //    }
 //
 //}
