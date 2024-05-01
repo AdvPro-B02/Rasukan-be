@@ -2,6 +2,7 @@ package advpro.b2.rasukanbuysell.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -19,6 +20,8 @@ public class Cart {
     private long cartId;
 
 
+    @Setter
+    private UUID ownerId;
 //    private User owner;
 
 
