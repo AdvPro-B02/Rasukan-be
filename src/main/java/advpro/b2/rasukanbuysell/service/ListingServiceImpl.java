@@ -33,7 +33,7 @@ public class ListingServiceImpl implements ListingService{
 
     @Override
     public Listing updateListing(Listing listing) {
-        if (listingRepository.existsById(UUID.fromString(listing.getListingId()))){
+        if (listingRepository.existsById(listing.getListingId())){
             try{
                 return listingRepository.save(listing);
             } catch (DataIntegrityViolationException e){

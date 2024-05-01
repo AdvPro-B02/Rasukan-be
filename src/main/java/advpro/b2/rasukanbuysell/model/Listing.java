@@ -15,8 +15,8 @@ public class Listing {
 
     @Id
     @Setter
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String listingId;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID listingId;
 
     @Setter
     @Column(name="listingName", nullable = false)

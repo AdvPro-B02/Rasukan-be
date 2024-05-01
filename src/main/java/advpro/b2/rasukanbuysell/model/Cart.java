@@ -16,8 +16,8 @@ import lombok.Setter;
 public class Cart {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long cartId;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID cartId;
 
 
     @Setter
