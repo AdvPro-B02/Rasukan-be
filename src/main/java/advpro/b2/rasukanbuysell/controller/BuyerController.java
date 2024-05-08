@@ -70,23 +70,24 @@ public class BuyerController {
     }
 
     @PostMapping("/listing/create")
-//    public ResponseEntity<Object> createListing(@RequestBody Listing listing) {
     public ResponseEntity<Object> createListing() {
+//    public ResponseEntity<Object> createListing(@RequestBody String listingName, @RequestBody int stock, @RequestBody int price) {
         // Use the ListingBuilder to construct a new Listing object
-        // Listing newListing = listingBuilder
-        //         .reset()
-        //         .addName(listing.getName())
-        //         .addStock(listing.getStock())
-        //         .addId() // This will generate a new UUID for the listing
-        //         .addSeller(listing.getSeller())
-        //         .build();
+//         Listing newListing = listingBuilder
+//                 .reset()
+//                 .addName(listingName)
+//                 .addStock(stock)
+//                 .addId()
+//                 .addPrice(price)
+//                 .addSeller(UUID.randomUUID()) // masih belom bener
+//                 .build();
 
         
         // Save the new listing using the listing service
-        // Listing savedListing = listingService.createListing(newListing);
+//         Listing savedListing = listingService.createListing(newListing);
         
         // dummy data
-        Listing listingBaru = new Listing("name", 10, 1000, UUID.randomUUID()); 
+        Listing listingBaru = new Listing("name", 10, 1000, UUID.randomUUID());
         Listing savedListing = listingService.createListing(listingBaru);
 
         if (savedListing == null) {

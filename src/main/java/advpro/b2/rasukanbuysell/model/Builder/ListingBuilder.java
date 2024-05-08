@@ -33,6 +33,11 @@ public class ListingBuilder {
         return this;
     }
 
+    public ListingBuilder addPrice(int price) {
+        currentListing.setPrice(price);
+        return this;
+    }
+
     public ListingBuilder addId(UUID id){
         currentListing.setListingId(id);
         return this;
