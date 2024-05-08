@@ -35,13 +35,15 @@ public class ListingServiceImpl implements ListingService{
 
     @Override
     public Listing updateListing(Listing listing) {
-        if (listingRepository.existsById(listing.getListingId())){
-            try{
-                return listingRepository.save(listing);
-            } catch (DataIntegrityViolationException e){
-                return null;
-            }
+        Listing existingListing = listingRepository.findById(listing.getListingId()).orElse(null);
 
+        if (existingListing != null) {
+            // dummy data
+            existingListing.setName("updatedName");
+            existingListing.setPrice(6969);
+            // Set other properties as needed
+
+            return listingRepository.save(existingListing);
         } else {
             return null;
         }

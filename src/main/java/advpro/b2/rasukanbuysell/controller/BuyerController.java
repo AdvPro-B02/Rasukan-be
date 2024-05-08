@@ -21,7 +21,7 @@ import advpro.b2.rasukanbuysell.service.CartService;
 import advpro.b2.rasukanbuysell.service.ListingService;
 //import advpro.b2.rasukanbuysell.service.UserService;
 
-@Controller
+@RestController
 @RequestMapping("/Buyer")
 public class BuyerController {
 
@@ -48,6 +48,14 @@ public class BuyerController {
     public ResponseEntity<List<Listing>> getAllListing() {
         List<Listing> listingList = listingService.getAllListings();
         return ResponseEntity.ok(listingList);
+    }
+
+    @GetMapping("/listings")
+    @ResponseBody
+    public ModelAndView getAllListings(Model model) {
+        List<Listing> listingList = listingService.getAllListings();
+        model.addAttribute("listings", listingList);
+        return new ModelAndView("all_listings");
     }
 
 
@@ -89,7 +97,7 @@ public class BuyerController {
     }
 
 
-
+// udah bisa, yang perlu diganti di service (dummy datanya)
     @PostMapping("/listing/update/{listingId}")
     // public ResponseEntity<Object> update(@RequestBody Listing listing, @PathVariable String listingId) {
     public ResponseEntity<Object> update(@PathVariable String listingId) {
@@ -98,7 +106,7 @@ public class BuyerController {
         
         Listing out = listingService.updateListing(listing);
         if (out == null) {
-            return new ResponseEntity<>("null / id not found error" + listing.getListingId(), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("null / id not found error " + listing.getListingId(), HttpStatus.BAD_REQUEST);
         }
         return ResponseEntity.ok(out);
     }
