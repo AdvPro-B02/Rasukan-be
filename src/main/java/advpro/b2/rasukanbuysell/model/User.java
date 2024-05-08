@@ -11,7 +11,6 @@
 //    private String userId;
 //    private String name;
 //    private int saldo;
-//    private List<Alamat> alamat;
+////    private List<Alamat> alamat;
 //    private Cart cart;
-//    private List<Listing> listingsOwned;
 //}
