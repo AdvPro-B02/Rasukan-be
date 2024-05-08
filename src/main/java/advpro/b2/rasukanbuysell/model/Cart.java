@@ -25,6 +25,12 @@ public class Cart {
 //    private User owner;
 
 
+    public Cart(UUID ownerId){
+        this.ownerId = ownerId;
+    }
+
+    public Cart() {}
+
 
     @Override
     public String toString() {

@@ -3,6 +3,7 @@ package advpro.b2.rasukanbuysell.service;
 import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.support.NullValue;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +19,7 @@ public class ListingServiceImpl implements ListingService{
 
     @Override
     public Listing createListing(Listing listing){
-        Listing newListing = new Listing(listing.getName(), listing.getStock(), listing.getPrice());
+        Listing newListing = new Listing(listing.getName(), listing.getStock(), listing.getPrice(), listing.getSeller());
         try {
             return listingRepository.save(listing);
         } catch (DataIntegrityViolationException e) {
@@ -30,6 +31,7 @@ public class ListingServiceImpl implements ListingService{
     public Optional<Listing> getListing(String listingId) {
         return listingRepository.findById(UUID.fromString(listingId));
     }
+
 
     @Override
     public Listing updateListing(Listing listing) {

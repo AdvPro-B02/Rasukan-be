@@ -6,43 +6,63 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.sql.Date;
 import java.util.UUID;
+
 
 @Entity
 @Table(name="listing")
-@Getter
+@Getter @Setter
 public class Listing {
 
     @Id
-    @Setter
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID listingId;
 
-    @Setter
     @Column(name="listingName", nullable = false)
     private String name;
 
-    @Setter
     @Column(name="listingPrice", nullable = false)
     private int price;
 
-    @Setter
     @Column(name="stock", nullable = false)
     private int stock;
 
-    @Setter
     @Column(name="seller_id", nullable = false)
     private UUID seller;
+    
+    @Column(name="order_counter", nullable = false)
+    private int orderCounter;
 
-    public Listing(String name, int stock, int price){
+    @Column(name="expired_date")
+    private Date expiredDate;
+
+    @Column(name="featured_listing", nullable = false)
+    private boolean featuredListing;
+
+    public Listing(String name, int stock, int price, UUID seller){
         this.name = name;
         this.price = price;
         this.stock = stock;
-//        this.seller = seller; // masih perlu dibenerin
+        this.seller = seller; // masih perlu dibenerin
+        this.orderCounter = 0;
+        this.featuredListing = false;
+        this.expiredDate = null;
     }
 
     public Listing() {
 
+    }
+
+    public Listing(String listingId, String nameUpdated, int i, int i1, UUID uuid) {
+        this.listingId = UUID.fromString(listingId);
+        this.name = name;
+        this.price = price;
+        this.stock = stock;
+        this.seller = seller; // masih perlu dibenerin
+        this.orderCounter = 0;
+        this.featuredListing = false;
+        this.expiredDate = null;
     }
 
     @Override
