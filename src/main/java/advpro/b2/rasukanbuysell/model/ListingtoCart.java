@@ -31,6 +31,10 @@ public class ListingtoCart {
     @Column(name = "quantity", nullable = false)
     private int quantity;
 
+    @Setter
+    @Column(name = "userId", nullable = false)
+    private UUID user;
+
     @Override
     public String toString() {
         ObjectMapper om = new ObjectMapper();
