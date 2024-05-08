@@ -21,7 +21,7 @@ import advpro.b2.rasukanbuysell.service.CartService;
 import advpro.b2.rasukanbuysell.service.ListingService;
 //import advpro.b2.rasukanbuysell.service.UserService;
 
-@RestController
+@Controller
 @RequestMapping("/Buyer")
 public class BuyerController {
 
