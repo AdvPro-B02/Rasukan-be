@@ -6,19 +6,22 @@ import java.util.UUID;
 
 import advpro.b2.rasukanbuysell.model.Cart;
 import advpro.b2.rasukanbuysell.model.Listing;
+import advpro.b2.rasukanbuysell.model.ListingtoCart;
 
 
 public interface CartService {
 
-    Cart createCart(UUID user);
+    public Cart createCart(String user);
 
-    Optional<Cart> getCart(UUID user);
+    public Optional<Cart> getCart(String user);
 
-    void addToCart(UUID user, Listing listing);
+    public ListingtoCart addToCart(String user, String listingUUID);
+
+//    public List<Listing> getListings(UUID user);
 
 //    Cart updateCart(UUID user, List<Listing> updatedInsideCart);
 
-    Cart removeFromCart(UUID user, Listing listing);
+    public Listing removeFromCart(String user, String listingId);
 
-    void checkout(UUID user);
+    public void checkout(String user);
 }

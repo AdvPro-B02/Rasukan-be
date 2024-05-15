@@ -10,22 +10,22 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+@Setter
 @Entity
 @Table(name="cart")
 @Getter
 public class Cart {
 
+
+//    private String cartId;
+
+
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID cartId;
-
-
-    @Setter
-    private UUID ownerId;
+    private String ownerId;
 //    private User owner;
 
 
-    public Cart(UUID ownerId){
+    public Cart(String ownerId){
         this.ownerId = ownerId;
     }
 

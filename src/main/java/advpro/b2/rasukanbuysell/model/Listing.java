@@ -17,7 +17,7 @@ public class Listing {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID listingId;
+    private String listingId;
 
     @Column(name="listingName", nullable = false)
     private String name;
@@ -29,7 +29,7 @@ public class Listing {
     private int stock;
 
     @Column(name="seller_id", nullable = false)
-    private UUID seller;
+    private String seller;
     
     @Column(name="order_counter", nullable = false)
     private int orderCounter;
@@ -40,7 +40,7 @@ public class Listing {
     @Column(name="featured_listing", nullable = false)
     private boolean featuredListing;
 
-    public Listing(String name, int stock, int price, UUID seller){
+    public Listing(String name, int stock, int price, String seller){
         this.name = name;
         this.price = price;
         this.stock = stock;
@@ -54,12 +54,12 @@ public class Listing {
 
     }
 
-    public Listing(String listingId, String nameUpdated, int i, int i1, UUID uuid) {
-        this.listingId = UUID.fromString(listingId);
+    public Listing(String listingId, String name, int price, int stock, String uuid) {
+        this.listingId = listingId;
         this.name = name;
         this.price = price;
         this.stock = stock;
-        this.seller = seller; // masih perlu dibenerin
+        this.seller = uuid; // masih perlu dibenerin
         this.orderCounter = 0;
         this.featuredListing = false;
         this.expiredDate = null;

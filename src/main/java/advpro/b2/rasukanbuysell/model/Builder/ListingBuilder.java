@@ -29,7 +29,7 @@ public class ListingBuilder {
     }
 
     public ListingBuilder addId(){
-        currentListing.setListingId(UUID.randomUUID());
+        currentListing.setListingId(String.valueOf(UUID.randomUUID()));
         return this;
     }
 
@@ -39,7 +39,7 @@ public class ListingBuilder {
     }
 
     public ListingBuilder addId(UUID id){
-        currentListing.setListingId(id);
+        currentListing.setListingId(id.toString());
         return this;
     }
 
@@ -48,7 +48,7 @@ public class ListingBuilder {
         return this;
     }
 
-    public ListingBuilder addSeller(UUID sellerId){
+    public ListingBuilder addSeller(String sellerId){
         currentListing.setSeller(sellerId);
         return this;
     }

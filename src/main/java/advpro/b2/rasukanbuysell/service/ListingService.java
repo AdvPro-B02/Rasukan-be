@@ -4,11 +4,12 @@ import java.util.List;
 import java.util.Optional;
 
 import advpro.b2.rasukanbuysell.model.Listing;
+import org.springframework.web.bind.annotation.RequestHeader;
 //import advpro.b2.rasukanbuysell.model.User;
 
 public interface ListingService {
     
-    public Listing createListing(Listing listing);
+    public Listing createListing(Listing listing, String token);
 
     public Optional<Listing> getListing(String listingId);
 
@@ -17,6 +18,8 @@ public interface ListingService {
     public void deleteListing(String listingId);
 
     public List<Listing> getAllListings();
+
+    public Listing buildListing(Listing listing, String token);
 
 //    public User getSeller(String userId, String listingId);
 

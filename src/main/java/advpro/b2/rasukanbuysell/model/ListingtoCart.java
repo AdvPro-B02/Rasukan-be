@@ -15,7 +15,7 @@ public class ListingtoCart {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID listingInCartId;
+    private String listingInCartId;
 
     @Setter
     @ManyToOne
@@ -24,16 +24,16 @@ public class ListingtoCart {
 
     @Setter
     @ManyToOne
-    @JoinColumn(name = "cart_id", referencedColumnName = "cartId")
+    @JoinColumn(name = "owner_id", referencedColumnName = "ownerId")
     private Cart cart;
 
     @Setter
     @Column(name = "quantity", nullable = false)
     private int quantity;
 
-    @Setter
-    @Column(name = "userId", nullable = false)
-    private UUID user;
+    // @Setter
+    // @Column(name = "userId", nullable = false)
+    // private String user;
 
     @Override
     public String toString() {

@@ -1,8 +1,6 @@
 package advpro.b2.rasukanbuysell.service;
 
-import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 import advpro.b2.rasukanbuysell.model.ListingtoCart;
 import advpro.b2.rasukanbuysell.repository.ListingtoCartRepository;
@@ -13,6 +11,7 @@ import advpro.b2.rasukanbuysell.model.Cart;
 import advpro.b2.rasukanbuysell.model.Listing;
 //import advpro.b2.rasukanbuysell.model.User;
 import advpro.b2.rasukanbuysell.repository.CartRepository;
+import advpro.b2.rasukanbuysell.repository.ListingRepository;
 
 @Service
 public class CartServiceImpl implements CartService {
@@ -21,10 +20,13 @@ public class CartServiceImpl implements CartService {
     private CartRepository cartRepository;
 
     @Autowired
+    private ListingRepository listingRepository;
+
+    @Autowired
     private ListingtoCartRepository listingToCartRepository;
 
     @Override
-    public Cart createCart(UUID user) {
+    public Cart createCart(String user) {
         // Check if a Cart with the given UUID already exists
         Optional<Cart> existingCart = cartRepository.findById(user);
 
@@ -38,30 +40,56 @@ public class CartServiceImpl implements CartService {
 
 
     @Override
-    public Optional<Cart> getCart(UUID user) {
-        return cartRepository.getOwner(user);
+    public Optional<Cart> getCart(String user) {
+        return Optional.ofNullable(cartRepository.findByOwnerId(user));
     }
 
 
     @Override
-    public void addToCart(UUID user, Listing listing) {
+    public ListingtoCart addToCart(String user, String listingUUID) {
         // Get the Cart of the user
-        Optional<Cart> cartOpt = getCart(user);
+        Cart cart = cartRepository.findByOwnerId(user);
+        Optional<Listing> listingOpt = listingRepository.findByListingId(listingUUID);
 
-        if (cartOpt.isPresent()) {
-            Cart cart = cartOpt.get();
+        if (cart != null) {
 
-            // Create a new ListingtoCart
-            ListingtoCart listingToCart = new ListingtoCart();
-            listingToCart.setListing(listing);
-            listingToCart.setCart(cart);
-            listingToCart.setUser(user);
-            listingToCart.setQuantity(1); // Set the quantity as needed
+            if (listingOpt.isPresent()) {
+                Listing listing = listingOpt.get();
 
-            // Save the ListingtoCart to the repository
-            listingToCartRepository.save(listingToCart);
+                // Create a new ListingtoCart
+                ListingtoCart listingToCart = new ListingtoCart();
+                listingToCart.setListing(listing);
+                listingToCart.setCart(cart);
+                // listingToCart.setUser(user);
+                listingToCart.setQuantity(1); // Set the quantity as needed
+
+                // Save the ListingtoCart to the repository
+                listingToCartRepository.save(listingToCart);
+
+                return listingToCart;
+            }
         }
+        return null;
     }
+
+    // TODO: AGHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH
+//    @Override
+//    public List<Listing> getListings(UUID cartId) {
+//        Optional<Cart> cart = cartRepository.getCart(cartId);
+//        if (cart.isPresent()) {
+//            UUID ownerId = cart.get().getOwnerId(); // Assuming Cart has a getUser method
+//            return listingRepository.getListing(ownerId);
+//        } else {
+//            // Handle the case where the cart is not found
+//            // You can throw an exception or return an empty list, depending on your business logic
+//            return Collections.emptyList();
+//        }
+//    }
+
+
+
+
+
 
 
 
@@ -72,27 +100,31 @@ public class CartServiceImpl implements CartService {
 //    }
 
     @Override
-    public Cart removeFromCart(UUID user, Listing listing) {
+    public Listing removeFromCart(String user, String listingId) {
         // Get the Cart of the user
         Optional<Cart> cartOpt = getCart(user);
+        Optional<Listing> listingOpt = listingRepository.findByListingId(listingId);
 
         if (cartOpt.isPresent()) {
             Cart cart = cartOpt.get();
 
-            // Find the ListingtoCart that maps the Cart and the Listing
-            Optional<ListingtoCart> listingToCartOpt = Optional.ofNullable(listingToCartRepository.findListingInCart(cart, listing));
+            if (listingOpt.isPresent()) {
+                Listing listing = listingOpt.get();
+                // Find the ListingtoCart that maps the Cart and the Listing
+                Optional<ListingtoCart> listingToCartOpt = Optional.ofNullable(listingToCartRepository.findListingInCart(cart, listing));
 
-            // Remove the ListingtoCart from the repository
-            listingToCartOpt.ifPresent(listingtoCart -> listingToCartRepository.delete(listingtoCart));
+                // Remove the ListingtoCart from the repository
+                listingToCartOpt.ifPresent(listingtoCart -> listingToCartRepository.delete(listingtoCart));
+            }
         }
 
-        return cartOpt.orElse(null);
+        return listingOpt.orElse(null);
     }
 
 
     // masih perlu tambahin banyak
     @Override
-    public void checkout(UUID user) {
+    public void checkout(String user) {
 //        Cart cart = getCart(user);
 //        if (cart != null) {
 //            cart.setInsideCart(new ArrayList<>());
