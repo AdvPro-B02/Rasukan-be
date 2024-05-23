@@ -10,7 +10,8 @@ ENV JDBC_DATABASE_URL ${JDBC_DATABASE_URL}
 ENV JDBC_DATABASE_USERNAME ${JDBC_DATABASE_USERNAME}
 
 WORKDIR /app
-COPY ./RasukanBuySell-0.0.1-SNAPSHOT.jar /app/App.jar
-EXPOSE 8080
+COPY ./RasukanBuySell-0.0.1-SNAPSHOT.jar /app
+RUN ls -la
 EXPOSE 3000
-CMD ["java","-jar","App.jar"]
+EXPOSE 8080
+CMD ["java","-jar","RasukanBuySell-0.0.1-SNAPSHOT.jar"]
