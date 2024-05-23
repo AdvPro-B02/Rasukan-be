@@ -4,6 +4,8 @@ on:
     branches:
       - main
       - staging
+      - dev
+      - buygit 
 
 jobs:
   build:
