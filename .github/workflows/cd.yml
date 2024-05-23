@@ -5,6 +5,7 @@ on:
       - main
       - staging
       - dev
+      - buy
 
 jobs:
   build:
