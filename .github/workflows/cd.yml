@@ -5,7 +5,6 @@ on:
       - main
       - staging
       - dev
-      - buygit 
 
 jobs:
   build:
@@ -33,7 +32,6 @@ jobs:
         run: |
           ./gradlew assemble
       # (Optional) Add steps for running tests and generating reports
-
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
@@ -99,10 +97,8 @@ jobs:
         uses: actions/checkout@v4
       - name: Install SSH client
         run: sudo apt-get install openssh-client
-
       - name: create ssh key
         run: echo "${{ secrets.SSH_KEY }}" > ssh-key.pem
-
       - name: update permission
         run: chmod 400 ssh-key.pem
       - name: Deploy to GCP
