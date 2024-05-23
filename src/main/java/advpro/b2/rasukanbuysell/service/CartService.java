@@ -1,22 +1,27 @@
 package advpro.b2.rasukanbuysell.service;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 import advpro.b2.rasukanbuysell.model.Cart;
 import advpro.b2.rasukanbuysell.model.Listing;
-import advpro.b2.rasukanbuysell.model.User;
+import advpro.b2.rasukanbuysell.model.ListingtoCart;
+
 
 public interface CartService {
 
-    Cart createCart(User user);
+    public Cart createCart(String user);
 
-    Cart getCart(User user);
+    public Optional<Cart> getCart(String user);
 
-    void addToCart(User user, Listing listing);
+    public ListingtoCart addToCart(String user, String listingUUID);
 
-    Cart updateCart(User user, List<Listing> updatedInsideCart);
+//    public List<Listing> getListings(UUID user);
 
-    Cart removeFromCart(User user, Listing listing);
+//    Cart updateCart(UUID user, List<Listing> updatedInsideCart);
 
-    void checkout(User user);
+    public Listing removeFromCart(String user, String listingId);
+
+    public void checkout(String user);
 }

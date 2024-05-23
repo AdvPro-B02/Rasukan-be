@@ -2,18 +2,43 @@ package advpro.b2.rasukanbuysell.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-@Setter @Getter
+@Setter
+@Entity
+@Table(name="cart")
+@Getter
 public class Cart {
-    private User owner;
 
-    private List<Listing> insideCart;
 
-    public Cart(User owner){
-        this.owner = owner;
-        this.insideCart = new ArrayList<>();
+//    private String cartId;
+
+
+    @Id
+    private String ownerId;
+//    private User owner;
+
+
+    public Cart(String ownerId){
+        this.ownerId = ownerId;
+    }
+
+    public Cart() {}
+
+
+    @Override
+    public String toString() {
+        ObjectMapper om = new ObjectMapper();
+        try {
+            return om.writeValueAsString(this);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

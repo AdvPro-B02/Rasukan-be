@@ -1,15 +1,17 @@
 package advpro.b2.rasukanbuysell.service;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Optional;
 
+import advpro.b2.rasukanbuysell.model.ListingtoCart;
+import advpro.b2.rasukanbuysell.repository.ListingtoCartRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import advpro.b2.rasukanbuysell.model.Cart;
 import advpro.b2.rasukanbuysell.model.Listing;
-import advpro.b2.rasukanbuysell.model.User;
+//import advpro.b2.rasukanbuysell.model.User;
 import advpro.b2.rasukanbuysell.repository.CartRepository;
+import advpro.b2.rasukanbuysell.repository.ListingRepository;
 
 @Service
 public class CartServiceImpl implements CartService {
@@ -17,50 +19,116 @@ public class CartServiceImpl implements CartService {
     @Autowired
     private CartRepository cartRepository;
 
-    @Override
-    public Cart createCart(User user) {
-        return cartRepository.create(user);
-    }
+    @Autowired
+    private ListingRepository listingRepository;
+
+    @Autowired
+    private ListingtoCartRepository listingToCartRepository;
 
     @Override
-    public Cart getCart(User user) {
-        return cartRepository.findByUser(user);
-    }
+    public Cart createCart(String user) {
+        // Check if a Cart with the given UUID already exists
+        Optional<Cart> existingCart = cartRepository.findById(user);
 
-    @Override
-    public void addToCart(User user, Listing listing) {
-        Cart cart = getCart(user);
-        if (cart != null) {
-            List<Listing> insideCart = cart.getInsideCart();
-            insideCart.add(listing);
-            updateCart(user, insideCart);
+        // If the Cart does not exist, create a new one
+        if (existingCart.isEmpty()) {
+            return cartRepository.save(new Cart(user));
         }
+        // If the Cart already exists, return null
+        return null;
     }
 
 
     @Override
-    public Cart updateCart(User user, List<Listing> updatedInsideCart) {
-        return cartRepository.updateCart(user, updatedInsideCart);
+    public Optional<Cart> getCart(String user) {
+        return Optional.ofNullable(cartRepository.findByOwnerId(user));
     }
 
+
     @Override
-    public Cart removeFromCart(User user, Listing listing) {
-        Cart cart = getCart(user);
+    public ListingtoCart addToCart(String user, String listingUUID) {
+        // Get the Cart of the user
+        Cart cart = cartRepository.findByOwnerId(user);
+        Optional<Listing> listingOpt = listingRepository.findByListingId(listingUUID);
+
         if (cart != null) {
-            List<Listing> insideCart = cart.getInsideCart();
-            insideCart.remove(listing);
-            cart = updateCart(user, insideCart);
+
+            if (listingOpt.isPresent()) {
+                Listing listing = listingOpt.get();
+
+                // Create a new ListingtoCart
+                ListingtoCart listingToCart = new ListingtoCart();
+                listingToCart.setListing(listing);
+                listingToCart.setCart(cart);
+                // listingToCart.setUser(user);
+                listingToCart.setQuantity(1); // Set the quantity as needed
+
+                // Save the ListingtoCart to the repository
+                listingToCartRepository.save(listingToCart);
+
+                return listingToCart;
+            }
         }
-        return cart;
+        return null;
     }
+
+    // TODO: AGHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH
+//    @Override
+//    public List<Listing> getListings(UUID cartId) {
+//        Optional<Cart> cart = cartRepository.getCart(cartId);
+//        if (cart.isPresent()) {
+//            UUID ownerId = cart.get().getOwnerId(); // Assuming Cart has a getUser method
+//            return listingRepository.getListing(ownerId);
+//        } else {
+//            // Handle the case where the cart is not found
+//            // You can throw an exception or return an empty list, depending on your business logic
+//            return Collections.emptyList();
+//        }
+//    }
+
+
+
+
+
+
+
+
+//    @Override
+//    public Cart updateCart(UUID user, List<Listing> updatedInsideCart) {
+//        return new Cart();
+////        return cartRepository.updateCart(user, updatedInsideCart);
+//    }
+
+    @Override
+    public Listing removeFromCart(String user, String listingId) {
+        // Get the Cart of the user
+        Optional<Cart> cartOpt = getCart(user);
+        Optional<Listing> listingOpt = listingRepository.findByListingId(listingId);
+
+        if (cartOpt.isPresent()) {
+            Cart cart = cartOpt.get();
+
+            if (listingOpt.isPresent()) {
+                Listing listing = listingOpt.get();
+                // Find the ListingtoCart that maps the Cart and the Listing
+                Optional<ListingtoCart> listingToCartOpt = Optional.ofNullable(listingToCartRepository.findListingInCart(cart, listing));
+
+                // Remove the ListingtoCart from the repository
+                listingToCartOpt.ifPresent(listingtoCart -> listingToCartRepository.delete(listingtoCart));
+            }
+        }
+
+        return listingOpt.orElse(null);
+    }
+
 
     // masih perlu tambahin banyak
     @Override
-    public void checkout(User user) {
-        Cart cart = getCart(user);
-        if (cart != null) {
-            cart.setInsideCart(new ArrayList<>());
-            updateCart(user, cart.getInsideCart());
-        }
+    public void checkout(String user) {
+//        Cart cart = getCart(user);
+//        if (cart != null) {
+//            cart.setInsideCart(new ArrayList<>());
+//            updateCart(user, cart.getInsideCart());
+//        }
     }
 }
