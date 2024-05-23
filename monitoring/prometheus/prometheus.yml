@@ -6,4 +6,3 @@ scrape_configs:
       - targets: [ 'host.docker.internal:80' ]
         labels:
           application: 'RasukanBuySell'
-
