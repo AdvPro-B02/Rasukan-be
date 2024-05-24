@@ -134,11 +134,10 @@ public class BuyerController {
 
 // udah bisa, yang perlu diganti di service (dummy datanya)
     @PostMapping("/listing/update/{listingId}")
-    // public ResponseEntity<Object> update(@RequestBody Listing listing, @PathVariable String listingId) {
-    public ResponseEntity<Object> update(@PathVariable String listingId, Listing dataListingBaru, @RequestHeader ("Authorization") String token) {
+    public ResponseEntity<Object> update(@PathVariable String listingId, @RequestBody Listing dataListingBaru, @RequestHeader ("Authorization") String token) {
 
         if (token!=null && !token.isEmpty()) {
-
+            System.out.println(dataListingBaru);
             // data dummy
             Listing listing = new Listing(listingId, dataListingBaru.getName(), dataListingBaru.getPrice(), dataListingBaru.getStock(), dataListingBaru.getSeller());
 
