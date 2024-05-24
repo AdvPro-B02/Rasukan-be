@@ -1,5 +1,6 @@
 package advpro.b2.rasukanbuysell.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import advpro.b2.rasukanbuysell.model.ListingtoCart;
@@ -52,9 +53,17 @@ public class CartServiceImpl implements CartService {
         Optional<Listing> listingOpt = listingRepository.findByListingId(listingUUID);
 
         if (cart != null) {
-
             if (listingOpt.isPresent()) {
                 Listing listing = listingOpt.get();
+
+                // Check if the listing is already in the cart
+                List<Listing> cartListings = listingToCartRepository.getAllListingInCart(cart);
+                for (Listing cartListing : cartListings) {
+                    if (cartListing.equals(listing)) {
+                        // The listing is already in the cart, so we don't add it again
+                        return null;
+                    }
+                }
 
                 // Create a new ListingtoCart
                 ListingtoCart listingToCart = new ListingtoCart();
