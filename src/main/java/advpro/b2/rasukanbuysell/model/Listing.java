@@ -34,20 +34,12 @@ public class Listing {
     @Column(name="order_counter", nullable = false)
     private int orderCounter;
 
-    @Column(name="expired_date")
-    private Date expiredDate;
-
-    @Column(name="featured_listing", nullable = false)
-    private boolean featuredListing;
-
     public Listing(String name, int stock, int price, String seller){
         this.name = name;
         this.price = price;
         this.stock = stock;
         this.seller = seller; // masih perlu dibenerin
         this.orderCounter = 0;
-        this.featuredListing = false;
-        this.expiredDate = null;
     }
 
     public Listing() {
@@ -61,8 +53,6 @@ public class Listing {
         this.stock = stock;
         this.seller = uuid; // masih perlu dibenerin
         this.orderCounter = 0;
-        this.featuredListing = false;
-        this.expiredDate = null;
     }
 
     @Override
