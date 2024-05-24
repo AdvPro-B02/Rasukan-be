@@ -65,6 +65,7 @@ public class ListingServiceImpl implements ListingService{
             // dummy data
             existingListing.setName(listing.getName());
             existingListing.setPrice(listing.getPrice());
+            existingListing.setStock(listing.getStock());
             // Set other properties as needed
 
             return listingRepository.save(existingListing);
