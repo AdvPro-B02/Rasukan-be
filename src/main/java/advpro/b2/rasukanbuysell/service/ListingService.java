@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 
 public interface ListingService {
     
-    public Listing createListing(Listing listing, String token);
+    public Listing createListing(Listing listing);
 
     public Optional<Listing> getListing(String listingId);
 
@@ -19,7 +19,7 @@ public interface ListingService {
 
     public List<Listing> getAllListings();
 
-    public Listing buildListing(Listing listing, String token);
+    public Listing buildListing(Listing listing);
 
 //    public User getSeller(String userId, String listingId);
 
