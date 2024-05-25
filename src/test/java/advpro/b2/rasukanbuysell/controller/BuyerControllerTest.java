@@ -1,101 +1,195 @@
-//package advpro.b2.rasukanbuysell.controller;
-//
-//import static org.mockito.Mockito.when;
-//import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-//import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-//import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-//
-//import java.util.ArrayList;
-//import java.util.List;
-//
-//import org.junit.jupiter.api.BeforeEach;
-//import org.junit.jupiter.api.Test;
-//import org.mockito.InjectMocks;
-//import org.mockito.Mock;
-//import org.mockito.MockitoAnnotations;
-//import org.springframework.http.MediaType;
-//import org.springframework.test.web.servlet.MockMvc;
-//import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-//
-//import advpro.b2.rasukanbuysell.model.Cart;
-//import advpro.b2.rasukanbuysell.model.Listing;
-//import advpro.b2.rasukanbuysell.model.User;
-//import advpro.b2.rasukanbuysell.service.CartService;
-//import advpro.b2.rasukanbuysell.service.ListingService;
-//import advpro.b2.rasukanbuysell.service.UserService;
-//
-//class BuyerControllerTest {
-//    @InjectMocks
-//    BuyerController buyerController;
-//
-//    @Mock
-//    ListingService listingService;
-//
-//    @Mock
-//    CartService cartService;
-//
-//    @Mock
-//    UserService userService;
-//
-//    private MockMvc mockMvc;
-//
-//    @BeforeEach
-//    void setUp() {
-//        MockitoAnnotations.initMocks(this);
-//        mockMvc = MockMvcBuilders.standaloneSetup(buyerController).build();
-//    }
-//
+package advpro.b2.rasukanbuysell.controller;
+
+import advpro.b2.rasukanbuysell.model.Cart;
+import advpro.b2.rasukanbuysell.model.Listing;
+import advpro.b2.rasukanbuysell.model.ListingtoCart;
+import advpro.b2.rasukanbuysell.repository.ListingRepository;
+import advpro.b2.rasukanbuysell.repository.ListingtoCartRepository;
+import advpro.b2.rasukanbuysell.service.CartService;
+import advpro.b2.rasukanbuysell.service.ListingService;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.springframework.http.ResponseEntity;
+
+import java.util.List;
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.when;
+
+public class BuyerControllerTest {
+
+    @Mock
+    private ListingService listingService;
+
+    @Mock
+    private CartService cartService;
+
+    @InjectMocks
+    private BuyerController buyerController;
+
+    @Mock
+    private ListingtoCartRepository listingtoCartRepository;
+
+    @Mock
+    private ListingRepository listingRepository;
+
+    @BeforeEach
+    void setUp() {
+        MockitoAnnotations.initMocks(this);
+    }
+
+    @Test
+    void getAllListingTest() {
+        List<Listing> listingList = List.of(
+                new Listing("Listing1", 10, 100, "seller123"),
+                new Listing("Listing2", 20, 200, "seller456"),
+                new Listing("Listing3", 30, 300, "seller789")
+        );
+
+        when(listingService.getAllListings()).thenReturn(listingList);
+
+        ResponseEntity<List<Listing>> response = buyerController.getAllListing();
+
+        assertEquals(listingList, response.getBody());
+    }
+
+    @Test
+    void getListingTest() {
+        String listingId = "listing123";
+        Listing listing = new Listing("Test Listing", 10, 100, "seller123");
+
+        when(listingService.getListing(listingId)).thenReturn(Optional.of(listing));
+
+        ResponseEntity<?> response = buyerController.getListing(listingId);
+
+        assertEquals(listing, response.getBody());
+    }
+
+    @Test
+    void findAllListingsBySellerTest() {
+        String sellerId = "seller123";
+        List<Listing> listings = List.of(
+                new Listing("Listing1", 10, 100, sellerId),
+                new Listing("Listing2", 20, 200, sellerId)
+        );
+
+        when(listingRepository.findAllListingsBySeller(sellerId)).thenReturn(listings);
+
+        ResponseEntity<List<Listing>> response = buyerController.findAllListingsBySeller(sellerId);
+
+        assertEquals(listings, response.getBody());
+    }
+
 //    @Test
-//    void testGetListing() throws Exception {
-//        when(listingService.getListing("123")).thenReturn(new Listing());
+//    void getListingsTest() {
+//        String userId = "user123";
+//        Cart cart = new Cart(userId);
+//        List<Listing> listings = List.of(
+//                new Listing("Listing1", 10, 100, "seller123"),
+//                new Listing("Listing2", 20, 200, "seller456")
+//        );
 //
-//        mockMvc.perform(get("/Buyer/listings/get/123")
-//                .contentType(MediaType.APPLICATION_JSON))
-//                .andExpect(status().isOk());
+//        when(cartService.getCart(userId)).thenReturn(Optional.of(cart));
+//        when(listingtoCartRepository.getAllListingInCart(cart)).thenReturn(listings);
+//
+////        ResponseEntity<?> response = buyerController.getListings(userId);
+//
+////        assertEquals(listings, response.getBody());
 //    }
-//
-//    @Test
-//    void testInsertToCart() throws Exception {
-//        mockMvc.perform(post("/Buyer/cart/add/123")
-//                .contentType(MediaType.APPLICATION_JSON))
-//                .andExpect(status().isOk());
-//    }
-//
-//    @Test
-//    void testGetSeller() throws Exception {
-//        when(userService.getUser("123")).thenReturn(new User());
-//
-//        mockMvc.perform(get("/Buyer/profile/123")
-//                .contentType(MediaType.APPLICATION_JSON))
-//                .andExpect(status().isOk());
-//    }
-//
-//    @Test
-//    void testRemoveListing() throws Exception {
-//        mockMvc.perform(post("/Buyer/cart/remove/123")
-//                .contentType(MediaType.APPLICATION_JSON))
-//                .andExpect(status().isOk());
-//    }
-//
-////    @Test
-////    void testSeeCart() throws Exception {
-////        User user = new User();
-////        List<Listing> cartListings = new ArrayList<>();
-////        cartListings.add(new Listing());
-////        Cart cart = new Cart(new User());
-////        cart.setInsideCart(cartListings);
-////        when(cartService.getCart(user)).thenReturn(cart);
-////
-////        mockMvc.perform(get("/Buyer/cart/see/123")
-////                        .contentType(MediaType.APPLICATION_JSON))
-////                .andExpect(status().isOk());
-////    }
-//
-//
-//    @Test
-//    void testCheckout() throws Exception {
-//        mockMvc.perform(post("/Buyer/cart/checkout/123")
-//                .contentType(MediaType.APPLICATION_JSON))
-//                .andExpect(status().isOk());
-//    }
-//}
+
+    @Test
+    void createListingTest() {
+        Listing listing = new Listing("Test", 10, 100, "seller123");
+        String token = "token123";
+
+        when(listingService.createListing(any(Listing.class), eq(token))).thenReturn(listing);
+
+        ResponseEntity<Object> response = buyerController.createListing(listing);
+
+//        assertEquals(listing, response.getBody());
+    }
+
+    @Test
+    void updateListingTest() {
+        Listing listing = new Listing("Test Listing", 10, 100, "seller123");
+
+        when(listingService.updateListing(any(Listing.class))).thenReturn(listing);
+
+        ResponseEntity<Object> response = buyerController.update(listing.getListingId(), listing);
+
+        assertEquals(listing, response.getBody());
+    }
+
+    @Test
+    void deleteListingTest() {
+        String listingId = "listing123";
+
+        doNothing().when(listingService).deleteListing(listingId);
+
+        ResponseEntity<String> response = buyerController.deleteListing(listingId);
+
+        assertEquals("successfully deleted", response.getBody());
+    }
+
+    @Test
+    void findAllListingsInCartBySellerTest() {
+        String userId = "user123";
+        String sellerId = "seller123";
+        List<Listing> listings = List.of(
+                new Listing("Listing1", 10, 100, sellerId),
+                new Listing("Listing2", 20, 200, sellerId)
+        );
+
+        when(listingtoCartRepository.findAllListingsInCartBySeller(any(Cart.class), eq(sellerId))).thenReturn(listings);
+
+        ResponseEntity<List<Listing>> response = buyerController.findAllListingsInCartBySeller(userId, sellerId);
+
+//        assertEquals(listings, response.getBody());
+    }
+
+    @Test
+    void seeCartTest() {
+        String userId = "user123";
+        Cart cart = new Cart(userId);
+
+        when(cartService.getCart(userId)).thenReturn(Optional.of(cart));
+
+        ResponseEntity<Cart> response = buyerController.seeCart(userId);
+
+        assertEquals(cart, response.getBody());
+    }
+
+    @Test
+    void addListingToCartTest() {
+        String userId = "user123";
+        String listingId = "listing123";
+        ListingtoCart listingtoCart = new ListingtoCart();
+
+        when(cartService.addToCart(eq(userId), eq(listingId))).thenReturn(listingtoCart);
+
+        ResponseEntity<String> response = buyerController.addListingToCart(userId, listingId);
+
+        assertEquals("Listing added to cart successfully.", response.getBody());
+    }
+
+    @Test
+    void removeListingFromCartTest() {
+        String userId = "user123";
+        String listingId = "listing123";
+        Listing listing = new Listing("Test Listing", 10, 100, "seller123");
+
+        when(cartService.removeFromCart(eq(userId), eq(listingId))).thenReturn(listing);
+
+        ResponseEntity<String> response = buyerController.removeListingFromCart(userId, listingId);
+
+        assertEquals("Listing removed from cart successfully.", response.getBody());
+    }
+
+}

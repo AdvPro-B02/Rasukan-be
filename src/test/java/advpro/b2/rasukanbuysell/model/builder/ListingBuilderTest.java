@@ -32,4 +32,32 @@ public class ListingBuilderTest {
         assertEquals(stock, listing.getStock(), "Stock should match the one set in the builder");
         assertEquals(seller, listing.getSeller(), "Seller should match the one set in the builder");
     }
+
+    @Test
+    public void testSetCurrent() {
+        // Arrange
+        ListingBuilder builder = new ListingBuilder();
+        Listing listing = new Listing();
+        listing.setName("Test Listing");
+
+        // Act
+        builder.setCurrent(listing);
+
+        // Assert
+        assertEquals("Test Listing", builder.build().getName());
+    }
+
+    @Test
+    public void testAddId() {
+        // Arrange
+        ListingBuilder builder = new ListingBuilder();
+        UUID id = UUID.randomUUID();
+
+        // Act
+        builder.addId(id);
+
+        // Assert
+        assertEquals(id.toString(), builder.build().getListingId());
+    }
+
 }
