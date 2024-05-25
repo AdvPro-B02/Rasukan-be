@@ -33,9 +33,9 @@ public class ListingServiceImpl implements ListingService{
     private RestTemplate restTemplate;
 
     @Override
-    public Listing createListing(Listing listing){
+    public Listing createListing(Listing listing, String token){
         HttpHeaders headers = new HttpHeaders();
-//        headers.add("Authorization", token);
+        headers.add("Authorization", token);
         HttpEntity<String> entity = new HttpEntity<>("body", headers);
 
         // TODO: uncomment habis ada authUrl
@@ -89,9 +89,9 @@ public class ListingServiceImpl implements ListingService{
     }
 
     @Override
-    public Listing buildListing(Listing listing) {
+    public Listing buildListing(Listing listing, String token) {
         HttpHeaders headers = new HttpHeaders();
-//        headers.add("Authorization", token);
+        headers.add("Authorization", token);
         HttpEntity<String> entity = new HttpEntity<>("body", headers);
 
         // TODO: uncomment habis ada authUrl

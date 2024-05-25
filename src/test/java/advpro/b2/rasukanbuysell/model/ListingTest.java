@@ -1,50 +1,28 @@
-//package advpro.b2.rasukanbuysell.model;
-//
-//import org.junit.jupiter.api.BeforeEach;
-//import org.junit.jupiter.api.Test;
-//
-//import static org.junit.jupiter.api.Assertions.*;
-//
-//public class ListingTest {
-//    Listing listing;
-//    User user;
-//    Cart cart;
-//
-//    @BeforeEach
-//    void setUp(){
-//        this.listing = new Listing();
-//        this.user = new User();
-//        this.cart = new Cart(user);
-//
-//        this.listing.setListingId("eb558e9f-1c39-460e-8860-71af6af63bd6");
-//        this.listing.setName("Item Name");
-//        this.listing.setPrice(100);
-//        this.listing.setOwner(user);
-//        this.listing.setCart(cart);
-//    }
-//
-//    @Test
-//    void testGetListingId(){
-//        assertEquals("eb558e9f-1c39-460e-8860-71af6af63bd6", listing.getListingId());
-//    }
-//
-//    @Test
-//    void testGetName(){
-//        assertEquals("Item Name", listing.getName());
-//    }
-//
-//    @Test
-//    void testGetPrice(){
-//        assertEquals(100, listing.getPrice());
-//    }
-//
-//    @Test
-//    void testGetOwner(){
-//        assertEquals(user, listing.getOwner());
-//    }
-//
-//    @Test
-//    void testGetCart(){
-//        assertEquals(cart, listing.getCart());
-//    }
-//}
+import advpro.b2.rasukanbuysell.model.Listing;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+public class ListingTest {
+
+    @Test
+    public void testListingConstructor() {
+        String name = "Test Listing";
+        int stock = 10;
+        int price = 100;
+        String seller = "seller123";
+        Listing listing = new Listing(name, stock, price, seller);
+        assertEquals(name, listing.getName());
+        assertEquals(stock, listing.getStock());
+        assertEquals(price, listing.getPrice());
+        assertEquals(seller, listing.getSeller());
+        assertEquals(0, listing.getOrderCounter());
+    }
+
+    @Test
+    public void testListingToString() {
+        Listing listing = new Listing("Test Listing", 10, 100, "seller123");
+        String expectedString = "{\"listingId\":null,\"name\":\"Test Listing\",\"price\":100,\"stock\":10,\"seller\":\"seller123\",\"orderCounter\":0}";
+        assertEquals(expectedString, listing.toString());
+    }
+}

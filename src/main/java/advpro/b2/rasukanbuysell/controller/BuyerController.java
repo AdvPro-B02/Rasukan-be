@@ -109,19 +109,20 @@ public class BuyerController {
 //    public ResponseEntity<Object> createListing(@RequestBody Listing listingBaru, @RequestHeader ("Authorization") String token) {
         // Use the ListingBuilder to construct a new Listing object
 
-//        if (token!=null && !token.isEmpty()) {
-        Listing newListing = listingService.buildListing(listingBaru);
-//        Listing newListing = listingService.buildListing(listingBaru, token);
+        String token = "ngasal";
+        if (token!=null && !token.isEmpty()) {
+            Listing newListing = listingService.buildListing(listingBaru, token);
+    //        Listing newListing = listingService.buildListing(listingBaru, token);
 
 
 
             // Save the new listing using the listing service
-//        Listing savedListing = listingService.createListing(newListing, token);
-        Listing savedListing = listingService.createListing(newListing);
+    //        Listing savedListing = listingService.createListing(newListing, token);
+            Listing savedListing = listingService.createListing(newListing, token);
 
             // dummy data, udah gaperlu :D
-    //        Listing listingBaru = new Listing("name", 10, 1000, UUID.randomUUID());
-    //        Listing savedListing = listingService.createListing(listingBaru);
+            //        Listing listingBaru = new Listing("name", 10, 1000, UUID.randomUUID());
+            //        Listing savedListing = listingService.createListing(listingBaru);
 
             if (savedListing == null) {
                 return new ResponseEntity<>("Ada atribut yang null", HttpStatus.BAD_REQUEST);
@@ -129,28 +130,28 @@ public class BuyerController {
                 return ResponseEntity.ok(savedListing);
             }
 
-//        }
+        }
 
-//        return ResponseEntity.notFound().build();
+        return ResponseEntity.notFound().build();
 
     }
 
 
-// udah bisa, yang perlu diganti di service (dummy datanya)
+    // udah bisa, yang perlu diganti di service (dummy datanya)
     @PostMapping("/listing/update/{listingId}")
     public ResponseEntity<Object> update(@PathVariable String listingId, @RequestBody Listing dataListingBaru) {
 //    public ResponseEntity<Object> update(@PathVariable String listingId, @RequestBody Listing dataListingBaru, @RequestHeader ("Authorization") String token) {
 
 //        if (token!=null && !token.isEmpty()) {
 //            System.out.println(dataListingBaru);
-            // data dummy
-            Listing listing = new Listing(listingId, dataListingBaru.getName(), dataListingBaru.getPrice(), dataListingBaru.getStock(), dataListingBaru.getSeller());
+        // data dummy
+        Listing listing = new Listing(listingId, dataListingBaru.getName(), dataListingBaru.getPrice(), dataListingBaru.getStock(), dataListingBaru.getSeller());
 
-            Listing out = listingService.updateListing(listing);
-            if (out == null) {
-                return new ResponseEntity<>("null / id not found error " + listing.getListingId(), HttpStatus.BAD_REQUEST);
-            }
-            return ResponseEntity.ok(out);
+        Listing out = listingService.updateListing(listing);
+        if (out == null) {
+            return new ResponseEntity<>("null / id not found error " + listing.getListingId(), HttpStatus.BAD_REQUEST);
+        }
+        return ResponseEntity.ok(out);
 //        }
 //        return ResponseEntity.notFound().build();
     }
@@ -160,9 +161,9 @@ public class BuyerController {
 //    public ResponseEntity<String> deleteListing(@PathVariable String listingId, @RequestHeader ("Authorization") String token) {
 
 //        if (token != null && !token.isEmpty()) {
-            listingService.deleteListing(listingId);
-            return ResponseEntity.ok("successfully deleted");
-        }
+        listingService.deleteListing(listingId);
+        return ResponseEntity.ok("successfully deleted");
+    }
 //        return ResponseEntity.notFound().build();
 //    }
 
