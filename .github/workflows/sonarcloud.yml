@@ -21,7 +21,7 @@ jobs:
         uses: ikalnytskyi/action-setup-postgres@v6
         with:
           username: postgres
-          password: my-password
+          password: ABCD
           database: rasukan
 
       - name: Set up JDK 21
