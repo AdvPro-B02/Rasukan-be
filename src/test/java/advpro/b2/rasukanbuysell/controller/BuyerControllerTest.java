@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
@@ -190,6 +191,110 @@ public class BuyerControllerTest {
         ResponseEntity<String> response = buyerController.removeListingFromCart(userId, listingId);
 
         assertEquals("Listing removed from cart successfully.", response.getBody());
+    }
+
+    @Test
+    void getListing_NotFoundTest() {
+        String listingId = "listing123";
+
+        when(listingService.getListing(listingId)).thenReturn(Optional.empty());
+
+        ResponseEntity<?> response = buyerController.getListing(listingId);
+
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+    }
+
+    @Test
+    void findAllListingsBySeller_NotFoundTest() {
+        String sellerId = "seller123";
+
+        when(listingRepository.findAllListingsBySeller(sellerId)).thenReturn(List.of());
+
+        ResponseEntity<List<Listing>> response = buyerController.findAllListingsBySeller(sellerId);
+
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+    }
+
+    @Test
+    void getListingsTest() {
+        String ownerId = "owner123";
+        Cart cart = new Cart(ownerId);
+        List<Listing> listings = List.of(
+                new Listing("Listing1", 10, 100, "seller123"),
+                new Listing("Listing2", 20, 200, "seller456")
+        );
+
+        when(cartService.getCart(ownerId)).thenReturn(Optional.of(cart));
+        when(listingtoCartRepository.getAllListingInCart(cart)).thenReturn(listings);
+
+        ResponseEntity<?> response = buyerController.getListings(ownerId);
+
+        assertEquals(listings, response.getBody());
+    }
+
+    @Test
+    void createListing_NotNullTest() {
+        Listing listing = new Listing("Test", 10, 100, "seller123");
+        String token = "token123";
+
+        when(listingService.createListing(any(Listing.class), eq(token))).thenReturn(listing);
+
+        ResponseEntity<Object> response = buyerController.createListing(listing);
+
+        assertEquals(listing, response.getBody());
+    }
+
+    @Test
+    void update_NotNullTest() {
+        Listing listing = new Listing("Test Listing", 10, 100, "seller123");
+
+        when(listingService.updateListing(any(Listing.class))).thenReturn(listing);
+
+        ResponseEntity<Object> response = buyerController.update(listing.getListingId(), listing);
+
+        assertEquals(listing, response.getBody());
+    }
+
+    @Test
+    void findAllListingsInCartBySeller_CartPresentTest() {
+        String userId = "user123";
+        String sellerId = "seller123";
+        Cart cart = new Cart(userId);
+        List<Listing> listings = List.of(
+                new Listing("Listing1", 10, 100, sellerId),
+                new Listing("Listing2", 20, 200, sellerId)
+        );
+
+        when(cartService.getCart(userId)).thenReturn(Optional.of(cart));
+        when(listingtoCartRepository.findAllListingsInCartBySeller(cart, sellerId)).thenReturn(listings);
+
+        ResponseEntity<List<Listing>> response = buyerController.findAllListingsInCartBySeller(userId, sellerId);
+
+        assertEquals(listings, response.getBody());
+    }
+
+    @Test
+    void addListingToCart_NotNullTest() {
+        String userId = "user123";
+        String listingId = "listing123";
+
+        when(cartService.addToCart(eq(userId), eq(listingId))).thenReturn(null);
+
+        ResponseEntity<String> response = buyerController.addListingToCart(userId, listingId);
+
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+    }
+
+    @Test
+    void removeListingFromCart_NotNullTest() {
+        String userId = "user123";
+        String listingId = "listing123";
+
+        when(cartService.removeFromCart(eq(userId), eq(listingId))).thenReturn(null);
+
+        ResponseEntity<String> response = buyerController.removeListingFromCart(userId, listingId);
+
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
     }
 
 }
