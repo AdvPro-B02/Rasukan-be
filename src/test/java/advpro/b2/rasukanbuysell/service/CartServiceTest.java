@@ -1,172 +1,116 @@
-//package advpro.b2.rasukanbuysell.service;
-//
-//import static org.junit.jupiter.api.Assertions.assertEquals;
-//import static org.junit.jupiter.api.Assertions.assertNotNull;
-//import static org.mockito.Mockito.when;
-//
-//import java.util.ArrayList;
-//import java.util.List;
-//
-//import org.junit.jupiter.api.BeforeEach;
-//import org.junit.jupiter.api.Test;
-//import org.mockito.InjectMocks;
-//import org.mockito.Mock;
-//import org.mockito.MockitoAnnotations;
-//
-//import advpro.b2.rasukanbuysell.model.Cart;
-//import advpro.b2.rasukanbuysell.model.Listing;
-//import advpro.b2.rasukanbuysell.model.User;
-//import advpro.b2.rasukanbuysell.repository.CartRepository;
-//
-//class CartServiceImplTest {
-//    @InjectMocks
-//    CartServiceImpl cartService;
-//
-//    @Mock
-//    CartRepository cartRepository;
-//
-//    @BeforeEach
-//    void setUp() {
-//        MockitoAnnotations.initMocks(this);
-//    }
-//
-//    @Test
-//    void testCreateCart() {
-//        User user = new User();
-//        user.setUserId("123");
-//        user.setName("Test User");
-//
-//        Cart cart = new Cart(user);
-//
-//        when(cartRepository.create(user)).thenReturn(cart);
-//
-//        Cart createdCart = cartService.createCart(user);
-//
-//        assertNotNull(createdCart);
-//        assertEquals(user, createdCart.getOwner());
-//    }
-//
-//    @Test
-//    void testGetCart() {
-//        User user = new User();
-//        user.setUserId("123");
-//        user.setName("Test User");
-//
-//        Cart cart = new Cart(user);
-//
-//        when(cartRepository.findByUser(user)).thenReturn(cart);
-//
-//        Cart foundCart = cartService.getCart(user);
-//
-//        assertNotNull(foundCart);
-//        assertEquals(user, foundCart.getOwner());
-//    }
-//
-//    @Test
-//    void testAddToCart() {
-//        User user = new User();
-//        user.setUserId("123");
-//        user.setName("Test User");
-//
-//        Cart cart = new Cart(user);
-//
-//        List<Listing> insideCart = new ArrayList<>();
-//        Listing listing = new Listing();
-//        listing.setListingId("456");
-//        listing.setName("Test Listing");
-//        listing.setPrice(100);
-//        insideCart.add(listing);
-//        cart.setInsideCart(insideCart);
-//
-//        when(cartRepository.findByUser(user)).thenReturn(cart);
-//        when(cartRepository.updateCart(user, insideCart)).thenReturn(cart);
-//
-//        cartService.addToCart(user, listing);
-//
-//        Cart updatedCart = cartService.getCart(user);
-//
-//        assertNotNull(updatedCart);
-//        // TODO: masih perlu benerin
-////        assertEquals(1, updatedCart.getInsideCart().size());
-////        assertEquals(listing, updatedCart.getInsideCart().get(0));
-//    }
-//
-//    @Test
-//    void testUpdateCart() {
-//        User user = new User();
-//        user.setUserId("123");
-//        user.setName("Test User");
-//
-//        Cart cart = new Cart(user);
-//
-//        List<Listing> updatedInsideCart = new ArrayList<>();
-//        Listing listing = new Listing();
-//        listing.setListingId("456");
-//        listing.setName("Test Listing");
-//        listing.setPrice(100);
-//        updatedInsideCart.add(listing);
-//
-//        when(cartRepository.updateCart(user, updatedInsideCart)).thenReturn(cart);
-//
-//        Cart updatedCart = cartService.updateCart(user, updatedInsideCart);
-//
-//        assertNotNull(updatedCart);
-//        // TODO: benerin
-////        assertEquals(updatedInsideCart, updatedCart.getInsideCart());
-//    }
-//
-//    @Test
-//    void testRemoveFromCart() {
-//        User user = new User();
-//        user.setUserId("123");
-//        user.setName("Test User");
-//
-//        Cart cart = new Cart(user);
-//
-//        List<Listing> insideCart = new ArrayList<>();
-//        Listing listing = new Listing();
-//        listing.setListingId("456");
-//        listing.setName("Test Listing");
-//        listing.setPrice(100);
-//        insideCart.add(listing);
-//        cart.setInsideCart(insideCart);
-//
-//        when(cartRepository.findByUser(user)).thenReturn(cart);
-//        when(cartRepository.updateCart(user, insideCart)).thenReturn(cart);
-//
-//        Cart updatedCart = cartService.removeFromCart(user, listing);
-//
-//        assertNotNull(updatedCart);
-//        assertEquals(0, updatedCart.getInsideCart().size());
-//    }
-//
-//    // TODO: checkout masih mager implement, banyak dependency
-//    @Test
-//    void testCheckout() {
-//        User user = new User();
-//        user.setUserId("123");
-//        user.setName("Test User");
-//
-//        Cart cart = new Cart(user);
-//
-//        List<Listing> insideCart = new ArrayList<>();
-//        Listing listing = new Listing();
-//        listing.setListingId("456");
-//        listing.setName("Test Listing");
-//        listing.setPrice(100);
-//        insideCart.add(listing);
-//        cart.setInsideCart(insideCart);
-//
-//        when(cartRepository.findByUser(user)).thenReturn(cart);
-//        when(cartRepository.updateCart(user, new ArrayList<>())).thenReturn(cart);
-//
-//        cartService.checkout(user);
-//
-//        Cart updatedCart = cartService.getCart(user);
-//
-//        assertNotNull(updatedCart);
-//        assertEquals(0, updatedCart.getInsideCart().size());
-//    }
-//
-//
-//}
+package advpro.b2.rasukanbuysell.service;
+
+import advpro.b2.rasukanbuysell.model.Cart;
+import advpro.b2.rasukanbuysell.model.Listing;
+import advpro.b2.rasukanbuysell.model.ListingtoCart;
+import advpro.b2.rasukanbuysell.repository.CartRepository;
+import advpro.b2.rasukanbuysell.repository.ListingRepository;
+import advpro.b2.rasukanbuysell.repository.ListingtoCartRepository;
+import advpro.b2.rasukanbuysell.service.CartServiceImpl;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
+
+class CartServiceTests {
+
+    @Mock
+    private CartRepository cartRepository;
+
+    @Mock
+    private ListingRepository listingRepository;
+
+    @Mock
+    private ListingtoCartRepository listingToCartRepository;
+
+    @InjectMocks
+    private CartServiceImpl cartService;
+
+    @BeforeEach
+    void setUp() {
+        MockitoAnnotations.initMocks(this);
+    }
+
+    @Test
+    void createCartTest() {
+        String userId = "user123";
+        Cart cart = new Cart(userId);
+
+        when(cartRepository.findById(userId)).thenReturn(Optional.empty());
+        when(cartRepository.save(any(Cart.class))).thenReturn(cart);
+
+        Cart newCart = cartService.createCart(userId);
+
+        assertNotNull(newCart);
+        assertEquals(userId, newCart.getOwnerId());
+        verify(cartRepository, times(1)).findById(userId);
+        verify(cartRepository, times(1)).save(any(Cart.class));
+    }
+
+    @Test
+    void getCartTest() {
+        String userId = "user123";
+        Cart cart = new Cart(userId);
+
+        when(cartRepository.findByOwnerId(userId)).thenReturn(cart);
+
+        Optional<Cart> retrievedCart = cartService.getCart(userId);
+
+        assertTrue(retrievedCart.isPresent());
+        assertEquals(cart, retrievedCart.get());
+        verify(cartRepository, times(1)).findByOwnerId(userId);
+    }
+
+    @Test
+    void addToCartTest() {
+        String userId = "user123";
+        String listingId = "listing123";
+        Cart cart = new Cart(userId);
+        Listing listing = new Listing("Test Listing", 10, 100, userId);
+
+        when(cartRepository.findByOwnerId(userId)).thenReturn(cart);
+        when(listingRepository.findByListingId(listingId)).thenReturn(Optional.of(listing));
+        when(listingToCartRepository.getAllListingInCart(cart)).thenReturn(new ArrayList<>());
+        when(listingToCartRepository.save(any(ListingtoCart.class))).thenReturn(new ListingtoCart());
+
+        ListingtoCart addedListing = cartService.addToCart(userId, listingId);
+
+        assertNotNull(addedListing);
+        assertEquals(listing, addedListing.getListing());
+        assertEquals(cart, addedListing.getCart());
+        assertEquals(1, addedListing.getQuantity());
+        verify(cartRepository, times(1)).findByOwnerId(userId);
+        verify(listingRepository, times(1)).findByListingId(listingId);
+        verify(listingToCartRepository, times(1)).save(any(ListingtoCart.class));
+    }
+
+    @Test
+    void removeFromCartTest() {
+        String userId = "user123";
+        String listingId = "listing123";
+        Cart cart = new Cart(userId);
+        Listing listing = new Listing("Test Listing", 10, 100, userId);
+        ListingtoCart listingtoCart = new ListingtoCart();
+        listingtoCart.setCart(cart);
+        listingtoCart.setListing(listing);
+
+        when(cartRepository.findByOwnerId(userId)).thenReturn(cart);
+        when(listingRepository.findByListingId(listingId)).thenReturn(Optional.of(listing));
+        when(listingToCartRepository.findListingInCart(cart, listing)).thenReturn(listingtoCart);
+
+        Listing removedListing = cartService.removeFromCart(userId, listingId);
+
+        assertNotNull(removedListing);
+        assertEquals(listing, removedListing);
+        verify(listingToCartRepository, times(1)).delete(listingtoCart);
+    }
+
+}
