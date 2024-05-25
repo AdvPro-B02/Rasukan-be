@@ -104,19 +104,14 @@ public class BuyerController {
     @PostMapping("/listing/create")
     public ResponseEntity<Object> createListing(@RequestBody Listing listingBaru) {
 
-        String token = "ngasal";
-        if (token != null && !token.isEmpty()) {
+        Listing newListing = listingService.buildListing(listingBaru, "ngasal");
+        Listing savedListing = listingService.createListing(newListing, "ngasal");
 
-            Listing newListing = listingService.buildListing(listingBaru, token);
-            Listing savedListing = listingService.createListing(newListing, token);
-
-            if (savedListing == null) {
-                return new ResponseEntity<>("Ada atribut yang null", HttpStatus.BAD_REQUEST);
-            } else {
-                return ResponseEntity.ok(savedListing);
-            }
+        if (savedListing == null) {
+            return new ResponseEntity<>("Ada atribut yang null", HttpStatus.BAD_REQUEST);
+        } else {
+            return ResponseEntity.ok(savedListing);
         }
-        return null;
 
     }
 
