@@ -45,14 +45,11 @@ public class BuyerController {
     private ListingRepository listingRepository;
 
 
-//    @Autowired
-//    private UserService userService;
-
-    @GetMapping("")
-    @ResponseBody
-    public ModelAndView main(){
-        return new ModelAndView("main");
-    }
+//    @GetMapping("")
+//    @ResponseBody
+//    public ModelAndView main(){
+//        return new ModelAndView("main");
+//    }
 
     @GetMapping("/listing/all")
     public ResponseEntity<List<Listing>> getAllListing() {
@@ -60,13 +57,13 @@ public class BuyerController {
         return ResponseEntity.ok(listingList);
     }
 
-    @GetMapping("/listings")
-    @ResponseBody
-    public ModelAndView getAllListings(Model model) {
-        List<Listing> listingList = listingService.getAllListings();
-        model.addAttribute("listings", listingList);
-        return new ModelAndView("all_listings");
-    }
+//    @GetMapping("/listings")
+//    @ResponseBody
+//    public ModelAndView getAllListings(Model model) {
+//        List<Listing> listingList = listingService.getAllListings();
+//        model.addAttribute("listings", listingList);
+//        return new ModelAndView("all_listings");
+//    }
 
 
     @GetMapping("/listing/get/{listingId}")
@@ -106,45 +103,27 @@ public class BuyerController {
 
     @PostMapping("/listing/create")
     public ResponseEntity<Object> createListing(@RequestBody Listing listingBaru) {
-//    public ResponseEntity<Object> createListing(@RequestBody Listing listingBaru, @RequestHeader ("Authorization") String token) {
-        // Use the ListingBuilder to construct a new Listing object
 
         String token = "ngasal";
-        if (token!=null && !token.isEmpty()) {
+        if (token != null && !token.isEmpty()) {
+
             Listing newListing = listingService.buildListing(listingBaru, token);
-    //        Listing newListing = listingService.buildListing(listingBaru, token);
-
-
-
-            // Save the new listing using the listing service
-    //        Listing savedListing = listingService.createListing(newListing, token);
             Listing savedListing = listingService.createListing(newListing, token);
-
-            // dummy data, udah gaperlu :D
-            //        Listing listingBaru = new Listing("name", 10, 1000, UUID.randomUUID());
-            //        Listing savedListing = listingService.createListing(listingBaru);
 
             if (savedListing == null) {
                 return new ResponseEntity<>("Ada atribut yang null", HttpStatus.BAD_REQUEST);
             } else {
                 return ResponseEntity.ok(savedListing);
             }
-
         }
-
-        return ResponseEntity.notFound().build();
+        return null;
 
     }
 
 
-    // udah bisa, yang perlu diganti di service (dummy datanya)
     @PostMapping("/listing/update/{listingId}")
     public ResponseEntity<Object> update(@PathVariable String listingId, @RequestBody Listing dataListingBaru) {
-//    public ResponseEntity<Object> update(@PathVariable String listingId, @RequestBody Listing dataListingBaru, @RequestHeader ("Authorization") String token) {
 
-//        if (token!=null && !token.isEmpty()) {
-//            System.out.println(dataListingBaru);
-        // data dummy
         Listing listing = new Listing(listingId, dataListingBaru.getName(), dataListingBaru.getPrice(), dataListingBaru.getStock(), dataListingBaru.getSeller());
 
         Listing out = listingService.updateListing(listing);
@@ -152,20 +131,15 @@ public class BuyerController {
             return new ResponseEntity<>("null / id not found error " + listing.getListingId(), HttpStatus.BAD_REQUEST);
         }
         return ResponseEntity.ok(out);
-//        }
-//        return ResponseEntity.notFound().build();
     }
 
     @DeleteMapping("/listing/delete/{listingId}")
     public ResponseEntity<String> deleteListing(@PathVariable String listingId) {
-//    public ResponseEntity<String> deleteListing(@PathVariable String listingId, @RequestHeader ("Authorization") String token) {
 
-//        if (token != null && !token.isEmpty()) {
         listingService.deleteListing(listingId);
         return ResponseEntity.ok("successfully deleted");
     }
-//        return ResponseEntity.notFound().build();
-//    }
+
 
     @GetMapping("/cart/from_seller/{userId}/{sellerId}")
     public ResponseEntity<List<Listing>> findAllListingsInCartBySeller(@PathVariable String userId, @PathVariable String sellerId) {
@@ -174,7 +148,6 @@ public class BuyerController {
         Optional<Cart> cartOpt = cartService.getCart(userId);
 
         if (cartOpt.isPresent()) {
-            // Get all listings in the cart for the specified seller
             List<Listing> listings = listingtoCartRepository.findAllListingsInCartBySeller(cartOpt.get(), sellerId);
 
             if (!listings.isEmpty()) {
@@ -183,7 +156,6 @@ public class BuyerController {
                 return ResponseEntity.notFound().build();
             }
         } else {
-            // If the cart does not exist, return not found
             return ResponseEntity.notFound().build();
         }
     }
@@ -192,7 +164,6 @@ public class BuyerController {
 
     @GetMapping("/cart/get/{userId}")
     public ResponseEntity<Cart> seeCart(@PathVariable String userId) {
-        // Convert the cartId to a UUID
 
         // Get the cart
         Optional<Cart> cartOpt = cartService.getCart(userId);
@@ -201,7 +172,6 @@ public class BuyerController {
             cartOpt = Optional.ofNullable(cartService.createCart(userId));
 
         }
-
         // If the cart exists, return it
         return cartOpt.map(ResponseEntity::ok).orElse(null);
     }
@@ -235,43 +205,4 @@ public class BuyerController {
         return ResponseEntity.notFound().build();
 
     }
-
-
-
-
-//    @PostMapping("/cart/add/{userId}")
-//    public ResponseEntity<String> insertToCart(@PathVariable String userId, String listingId) {
-//        User user = userService.getUser(userId);
-//        Listing listing = listingService.getListing(listingId);
-//        cartService.addToCart(user, listing);
-//        return ResponseEntity.ok("Listing added to cart");
-//    }
-
-//    @GetMapping("/profile/{userId}")
-//    public ResponseEntity<User> getSeller(@PathVariable String userId) {
-//        User seller = userService.getUser(userId);
-//        return ResponseEntity.ok(seller);
-//    }
-
-//    @PostMapping("cart/remove/{userId}")
-//    public ResponseEntity<String> removeListing(@PathVariable String userId, String listingId) {
-//        User user = userService.getUser(userId);
-//        Listing listing = listingService.getListing(listingId);
-//        cartService.removeFromCart(user, listing);
-//        return ResponseEntity.ok("Listing removed from cart");
-//    }
-
-//    @GetMapping("cart/see/{userId}")
-//    public ResponseEntity<List<Listing>> seeCart(@PathVariable String userId) {
-//        User user = userService.getUser(userId);
-//        List<Listing> cartListings = cartService.getCart(user).getInsideCart();
-//        return ResponseEntity.ok(cartListings);
-//    }
-
-//    @PostMapping("/cart/checkout/{userId}")
-//    public ResponseEntity<String> checkout(@PathVariable String userId) {
-//        User user = userService.getUser(userId);
-//        cartService.checkout(user);
-//        return ResponseEntity.ok("Checkout successful");
-//    }
 }

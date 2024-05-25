@@ -16,13 +16,8 @@ import lombok.Setter;
 @Getter
 public class Cart {
 
-
-//    private String cartId;
-
-
     @Id
     private String ownerId;
-//    private User owner;
 
 
     public Cart(String ownerId){

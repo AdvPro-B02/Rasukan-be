@@ -113,4 +113,80 @@ class CartServiceTests {
         verify(listingToCartRepository, times(1)).delete(listingtoCart);
     }
 
+    @Test
+    void createCart_ExistingCartTest() {
+        String userId = "user123";
+        Cart existingCart = new Cart(userId);
+
+        when(cartRepository.findById(userId)).thenReturn(Optional.of(existingCart));
+
+        Cart newCart = cartService.createCart(userId);
+
+        assertNull(newCart);
+        verify(cartRepository, times(1)).findById(userId);
+        verify(cartRepository, times(0)).save(any(Cart.class));
+    }
+
+    @Test
+    void addToCart_NoCartTest() {
+        String userId = "user123";
+        String listingId = "listing123";
+
+        when(cartRepository.findByOwnerId(userId)).thenReturn(null);
+
+        ListingtoCart addedListing = cartService.addToCart(userId, listingId);
+
+        assertNull(addedListing);
+        verify(cartRepository, times(1)).findByOwnerId(userId);
+    }
+
+    @Test
+    void addToCart_NoListingTest() {
+        String userId = "user123";
+        String listingId = "listing123";
+        Cart cart = new Cart(userId);
+
+        when(cartRepository.findByOwnerId(userId)).thenReturn(cart);
+        when(listingRepository.findByListingId(listingId)).thenReturn(Optional.empty());
+
+        ListingtoCart addedListing = cartService.addToCart(userId, listingId);
+
+        assertNull(addedListing);
+        verify(cartRepository, times(1)).findByOwnerId(userId);
+        verify(listingRepository, times(1)).findByListingId(listingId);
+    }
+
+    @Test
+    void addToCart_ListingInCartTest() {
+        String userId = "user123";
+        String listingId = "listing123";
+        Cart cart = new Cart(userId);
+        Listing listing = new Listing("Test Listing", 10, 100, userId);
+        List<Listing> cartListings = new ArrayList<>();
+        cartListings.add(listing);
+
+        when(cartRepository.findByOwnerId(userId)).thenReturn(cart);
+        when(listingRepository.findByListingId(listingId)).thenReturn(Optional.of(listing));
+        when(listingToCartRepository.getAllListingInCart(cart)).thenReturn(cartListings);
+
+        ListingtoCart addedListing = cartService.addToCart(userId, listingId);
+
+        assertNull(addedListing);
+        verify(cartRepository, times(1)).findByOwnerId(userId);
+        verify(listingRepository, times(1)).findByListingId(listingId);
+    }
+
+    @Test
+    void removeFromCart_NoCartTest() {
+        String userId = "user123";
+        String listingId = "listing123";
+
+        when(cartRepository.findByOwnerId(userId)).thenReturn(null);
+
+        Listing removedListing = cartService.removeFromCart(userId, listingId);
+
+        assertNull(removedListing);
+        verify(cartRepository, times(1)).findByOwnerId(userId);
+    }
+
 }

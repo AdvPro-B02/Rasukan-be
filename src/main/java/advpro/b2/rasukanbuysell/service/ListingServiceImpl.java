@@ -44,7 +44,6 @@ public class ListingServiceImpl implements ListingService{
 
         try {
             Listing newListing = new Listing(listing.getName(), listing.getStock(), listing.getPrice(), listing.getSeller());
-//            Listing newListing = new Listing(listing.getName(), listing.getStock(), listing.getPrice(), UUID.fromString(owner.getBody()));
             return listingRepository.save(newListing);
         } catch (Exception e) {
             return null;
@@ -66,7 +65,6 @@ public class ListingServiceImpl implements ListingService{
             existingListing.setName(listing.getName());
             existingListing.setPrice(listing.getPrice());
             existingListing.setStock(listing.getStock());
-            // Set other properties as needed
 
             return listingRepository.save(existingListing);
         } else {
@@ -82,10 +80,6 @@ public class ListingServiceImpl implements ListingService{
     @Override
     public List<Listing> getAllListings() {
         return listingRepository.findAll();
-//        Iterator<Listing> listingIterator = listingRepository.findAll();
-//        List<Listing> allListings = new ArrayList<>();
-//        listingIterator.forEachRemaining(allListings::add);
-//        return allListings;
     }
 
     @Override
@@ -102,15 +96,10 @@ public class ListingServiceImpl implements ListingService{
                 .addStock(listing.getStock())
                 .addId()
                 .addPrice(listing.getPrice())
-                .addSeller(listing.getSeller()) // masih belom bener
+                .addSeller(listing.getSeller())
                 .build();
 
         return newListing;
     }
 
-//    @Override
-//    public User getSeller(String userId, String listingId) {
-//        User seller = listingRepository.findSeller(userId, listingId);
-//        return seller;
-//    }
 }

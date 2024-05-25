@@ -17,11 +17,6 @@ public interface CartService {
 
     public ListingtoCart addToCart(String user, String listingUUID);
 
-//    public List<Listing> getListings(UUID user);
-
-//    Cart updateCart(UUID user, List<Listing> updatedInsideCart);
-
     public Listing removeFromCart(String user, String listingId);
 
-    public void checkout(String user);
 }

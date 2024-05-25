@@ -81,32 +81,6 @@ public class CartServiceImpl implements CartService {
         return null;
     }
 
-    // TODO: AGHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH
-//    @Override
-//    public List<Listing> getListings(UUID cartId) {
-//        Optional<Cart> cart = cartRepository.getCart(cartId);
-//        if (cart.isPresent()) {
-//            UUID ownerId = cart.get().getOwnerId(); // Assuming Cart has a getUser method
-//            return listingRepository.getListing(ownerId);
-//        } else {
-//            // Handle the case where the cart is not found
-//            // You can throw an exception or return an empty list, depending on your business logic
-//            return Collections.emptyList();
-//        }
-//    }
-
-
-
-
-
-
-
-
-//    @Override
-//    public Cart updateCart(UUID user, List<Listing> updatedInsideCart) {
-//        return new Cart();
-////        return cartRepository.updateCart(user, updatedInsideCart);
-//    }
 
     @Override
     public Listing removeFromCart(String user, String listingId) {
@@ -130,14 +104,4 @@ public class CartServiceImpl implements CartService {
         return listingOpt.orElse(null);
     }
 
-
-    // masih perlu tambahin banyak
-    @Override
-    public void checkout(String user) {
-//        Cart cart = getCart(user);
-//        if (cart != null) {
-//            cart.setInsideCart(new ArrayList<>());
-//            updateCart(user, cart.getInsideCart());
-//        }
-    }
 }
